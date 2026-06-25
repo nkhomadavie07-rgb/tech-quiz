@@ -1,230 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
-    <title>Tech Master Quiz</title>
 
-    <style>
-        body {
-            background: #000;
-            color: lime;
-            font-family: monospace;
-            text-align: center;
-            padding: 20px;
-        }
-
-        select, button {
-            padding: 10px;
-            margin: 10px;
-            cursor: pointer;
-        }
-
-        .option {
-            display: block;
-            margin: 10px auto;
-            width: 300px;
-        }
-
-        #question {
-            margin-top: 30px;
-            font-size: 18px;
-        }
-
-        #scoreBoard {
-            margin-top: 20px;
-        }
-    </style>
+   <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECH QUIZ</title>
 </head>
-
 <body>
+    <header>
 
-    <h1>💻 Tech Master Quiz</h1>
-
-    <select id="category">
-        <option value="networking">Networking</option>
-        <option value="cybersecurity">Cybersecurity</option>
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-        <option value="linux">Linux</option>
-        <option value="database">Databases</option>
-        <option value="strategy">Strategic Thinking</option>
-    </select>
-
-    <button onclick="startQuiz()">Start Quiz</button>
-
-    <div id="scoreBoard"></div>
-
-    <div id="question"></div>
-    <div id="options"></div>
-
-    <p id="result"></p>
-
-<script>
-let score = Number(localStorage.getItem("score")) || 0;
-let level = Number(localStorage.getItem("level")) || 1;
-let xp = Number(localStorage.getItem("xp")) || 0;
-
-function saveProgress() {
-    localStorage.setItem("score", score);
-    localStorage.setItem("level", level);
-    localStorage.setItem("xp", xp);
-}
-const questions = {
-    networking: [
-        { q: "What does DNS do?", options: ["Resolves domain names", "Encrypts data", "Stores files", "Blocks malware"], answer: "Resolves domain names" },
-        { q: "What protocol is used for web pages?", options: ["HTTP", "FTP", "SMTP", "SSH"], answer: "HTTP" },
-        { q: "What does IP stand for?", options: ["Internet Protocol", "Internal Process", "Input Program", "Internet Packet"], answer: "Internet Protocol" },
-        { q: "What device connects networks?", options: ["Router", "Mouse", "Switch", "Monitor"], answer: "Router" },
-        { q: "What port does HTTP use?", options: ["80", "21", "22", "443"], answer: "80" },
-        { q: "What is LAN?", options: ["Local Area Network", "Large Access Node", "Light Area Network", "Linked Access Node"], answer: "Local Area Network" },
-        { q: "What does TCP ensure?", options: ["Reliable delivery", "Faster CPU", "File storage", "Encryption"], answer: "Reliable delivery" },
-        { q: "What is a MAC address?", options: ["Hardware ID", "IP address", "Software key", "Browser ID"], answer: "Hardware ID" },
-        { q: "Which layer is DNS in?", options: ["Application", "Network", "Transport", "Physical"], answer: "Application" },
-        { q: "What is subnetting used for?", options: ["Dividing networks", "Speeding CPU", "Encrypting files", "Deleting viruses"], answer: "Dividing networks" }
-    ],
-
-    cybersecurity: [
-        { q: "What is a firewall?", options: ["Traffic filter", "Virus scanner", "Password manager", "Router"], answer: "Traffic filter" },
-        { q: "What is phishing?", options: ["Fake login attack", "WiFi setup", "Encryption", "Backup"], answer: "Fake login attack" },
-        { q: "What does VPN do?", options: ["Encrypts traffic", "Speeds internet", "Deletes viruses", "Stores data"], answer: "Encrypts traffic" },
-        { q: "What is brute force attack?", options: ["Password guessing", "Firewall setup", "Virus scan", "Data backup"], answer: "Password guessing" },
-        { q: "What is malware?", options: ["Malicious software", "Safe app", "Network tool", "Browser"], answer: "Malicious software" },
-        { q: "What is encryption?", options: ["Data protection", "File deletion", "Network speed", "Virus removal"], answer: "Data protection" },
-        { q: "What is 2FA?", options: ["Two-factor authentication", "Fast access", "Firewall type", "File system"], answer: "Two-factor authentication" },
-        { q: "What is a zero-day?", options: ["Unknown vulnerability", "Backup system", "Firewall rule", "VPN type"], answer: "Unknown vulnerability" },
-        { q: "What does HTTPS add?", options: ["Encryption", "Speed", "Ads", "Storage"], answer: "Encryption" },
-        { q: "What is social engineering?", options: ["Human manipulation", "Coding style", "Network design", "Firewall setup"], answer: "Human manipulation" }
-    ],
-
-    javascript: [
-        { q: "Which keyword declares variable?", options: ["let", "class", "loop", "int"], answer: "let" },
-        { q: "JS runs in?", options: ["Browser", "Database", "CPU", "Router"], answer: "Browser" },
-        { q: "What is DOM?", options: ["Page structure", "Database", "OS", "Server"], answer: "Page structure" },
-        { q: "Which symbol is used for comments?", options: ["//", "##", "**", "--"], answer: "//" },
-        { q: "What is an array?", options: ["List", "Number", "Function", "Loop"], answer: "List" },
-        { q: "What is typeof?", options: ["Check type", "Loop", "Function", "Error"], answer: "Check type" },
-        { q: "Which is async keyword?", options: ["async", "sync", "wait", "run"], answer: "async" },
-        { q: "What is NaN?", options: ["Not a Number", "Null", "Array", "Object"], answer: "Not a Number" },
-        { q: "What does JSON stand for?", options: ["JavaScript Object Notation", "JS Object Node", "Java Script Online Node", "None"], answer: "JavaScript Object Notation" },
-        { q: "What is event in JS?", options: ["User action", "Database", "File", "Server"], answer: "User action" }
-    ],
-
-    python: [
-        { q: "Keyword for function?", options: ["def", "func", "function", "lambda"], answer: "def" },
-        { q: "Python uses?", options: ["Indentation", "Brackets", "Tags", "Pointers"], answer: "Indentation" },
-        { q: "List type?", options: ["Array", "Object", "Table", "Stack"], answer: "Array" },
-        { q: "Print function?", options: ["print()", "echo()", "log()", "write()"], answer: "print()" },
-        { q: "Python is?", options: ["Interpreted", "Compiled only", "Hardware", "Database"], answer: "Interpreted" },
-        { q: "Loop keyword?", options: ["for", "repeat", "loop", "cycle"], answer: "for" },
-        { q: "Data type for true/false?", options: ["bool", "int", "str", "float"], answer: "bool" },
-        { q: "File open function?", options: ["open()", "read()", "file()", "load()"], answer: "open()" },
-        { q: "Python creator?", options: ["Guido van Rossum", "Elon Musk", "Linus", "Bill Gates"], answer: "Guido van Rossum" },
-        { q: "Import keyword?", options: ["import", "include", "using", "load"], answer: "import" }
-    ],
-
-    linux: [
-        { q: "List files?", options: ["ls", "dir", "show", "list"], answer: "ls" },
-        { q: "Change directory?", options: ["cd", "move", "go", "dir"], answer: "cd" },
-        { q: "Who am I command?", options: ["whoami", "me", "id", "user"], answer: "whoami" },
-        { q: "Root user symbol?", options: ["#", "$", "@", "%"], answer: "#" },
-        { q: "Remove file?", options: ["rm", "del", "erase", "remove"], answer: "rm" },
-        { q: "Show processes?", options: ["ps", "proc", "task", "run"], answer: "ps" },
-        { q: "Network test?", options: ["ping", "net", "test", "check"], answer: "ping" },
-        { q: "Update packages?", options: ["apt update", "update", "get update", "install"], answer: "apt update" },
-        { q: "Kernel is?", options: ["Core OS", "App", "Browser", "File"], answer: "Core OS" },
-        { q: "File permissions?", options: ["chmod", "perm", "access", "auth"], answer: "chmod" }
-    ],
-
-    database: [
-        { q: "SQL stands for?", options: ["Structured Query Language", "Simple Query List", "System Question Language", "None"], answer: "Structured Query Language" },
-        { q: "Primary key?", options: ["Unique ID", "Password", "Index", "Table"], answer: "Unique ID" },
-        { q: "DB type?", options: ["Relational", "File", "OS", "Network"], answer: "Relational" },
-        { q: "SQL command select?", options: ["SELECT", "GET", "FIND", "SHOW"], answer: "SELECT" },
-        { q: "Insert data?", options: ["INSERT", "ADD", "PUT", "APPEND"], answer: "INSERT" },
-        { q: "Delete data?", options: ["DELETE", "REMOVE", "DROP ALL", "CLEAR"], answer: "DELETE" },
-        { q: "Database server?", options: ["MySQL", "Chrome", "Linux", "Router"], answer: "MySQL" },
-        { q: "Table is?", options: ["Rows & Columns", "File", "App", "Code"], answer: "Rows & Columns" },
-        { q: "NoSQL means?", options: ["Not only SQL", "No Query", "No System", "None"], answer: "Not only SQL" },
-        { q: "Backup is?", options: ["Data copy", "Delete", "Encrypt", "Run"], answer: "Data copy" }
-    ],
-
-    strategy: [
-        { q: "Best first step in problem solving?", options: ["Understand problem", "Code immediately", "Guess", "Skip"], answer: "Understand problem" },
-        { q: "Strategy means?", options: ["Plan", "Random action", "Speed", "Error"], answer: "Plan" },
-        { q: "What improves decisions?", options: ["Thinking", "Ignoring", "Guessing", "Rushing"], answer: "Thinking" },
-        { q: "What is risk analysis?", options: ["Evaluating danger", "Coding", "Hacking", "Deleting"], answer: "Evaluating danger" },
-        { q: "Best mindset?", options: ["Adaptive", "Fixed", "Lazy", "Random"], answer: "Adaptive" },
-        { q: "What is optimization?", options: ["Better efficiency", "Slower work", "Errors", "Noise"], answer: "Better efficiency" },
-        { q: "What is planning?", options: ["Future steps", "Past review", "Guessing", "Skipping"], answer: "Future steps" },
-        { q: "Strategy in cybersecurity?", options: ["Defense planning", "Hacking", "Deleting logs", "Ignoring"], answer: "Defense planning" },
-        { q: "Good learner does what?", options: ["Iterates", "Stops", "Ignores", "Copies blindly"], answer: "Iterates" },
-        { q: "Best approach to learning?", options: ["Practice", "Only reading", "Skipping", "Memorizing"], answer: "Practice" }
-    ]
-};
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
-}
-
-let currentIndex = 0;
-let currentQuestions = [];
-let currentAnswer = "";
-
-function startQuiz() {
-    const category = document.getElementById("category").value;
-
-    currentQuestions = questions[category];
-    currentIndex = 0;
-    score = 0;
-
-    loadQuestion();
-}
-
-function loadQuestion() {
-    if (currentIndex >= currentQuestions.length) {
-        document.getElementById("question").innerHTML = "Quiz Finished!";
-        document.getElementById("options").innerHTML = "";
-        document.getElementById("scoreBoard").innerHTML =
-            `🎯 Final Score: ${score}/${currentQuestions.length}`;
-        return;
-    }
-
-    const q = currentQuestions[currentIndex];
-
-    document.getElementById("question").innerText = q.q;
-    document.getElementById("result").innerText = "";
-
-    currentAnswer = q.answer;
-
-    const optionsDiv = document.getElementById("options");
-    optionsDiv.innerHTML = "";
-
-    q.options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.className = "option";
-
-        btn.onclick = () => {
-            if (opt === currentAnswer) {
-                score++;
-                document.getElementById("result").innerText = "✅ Correct!";
-            } else {
-                document.getElementById("result").innerText =
-                    "❌ Wrong! Answer: " + currentAnswer;
-            }
-          
-            currentIndex++;
-            setTimeout(loadQuestion, 800);
-        };
-          saveProgress();
-        optionsDiv.appendChild(btn);
-    });
-
-    document.getElementById("scoreBoard").innerText =
-        `Score: ${score}/${currentIndex}`;
-}
-
-</script>
-
+        <h1> TECH QUIZ APP</h1>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#">HOME</a></li>
+                <li>  <a href="quiz.html">PLAY</a></li>
+                <li>  <a href="#">ABOUT</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+        <p>
+            Advance and consolidate your understading through, testing your self with this quiz program. practice more nad consume less learn faster and advance in life.
+        </p>
+        <p>"I am for we are.." <br>--Ubuntu</p>
+        <p>"I was in hell, but i took three steps and found myself in paradise...." <br> --Nitche</p>
+    </section>
+    <footer>
+        Contact us: <br>
+        <a href="mailto:nkhomadavie01@gmail.com">nkhomadavie01@gmail.com</a> |
+        <a href="mailto:cactusdavie33@gmail.com">cactusdavie33@gmail.com</a>
+    </footer>
 </body>
 </html>

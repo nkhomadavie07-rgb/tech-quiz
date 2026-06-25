@@ -1,0 +1,90 @@
+
+body{
+     font-family: "Black Ops One";
+    background-color: rgb(138, 135, 135);
+}
+
+.app, .subjects{
+    color: black;
+    background: white;
+    font-family: 'Times New Roman', Times, serif;
+    width: 90%;
+    margin: 0 auto;
+    padding: 0.2rem;
+    padding-bottom: 0.3rem;
+    border-radius: .5rem;
+    height: auto;
+    margin-top: 10rem;
+    text-align: center;
+
+
+}
+.sub-select{
+    display: flex;
+    flex-direction:row;
+    flex-flow: wrap;
+}
+.sub-select button{
+    width: 30%;
+
+    padding: 1rem;
+    margin: .04rem auto;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+.sub-select button:hover{
+    background: green;
+    color: skyblue;
+}
+#question{
+    
+     text-align: left;
+     padding-left: .5rem;
+}
+
+#options{
+    display: flex;
+    flex-direction: column;
+    width: 99%;
+    margin: auto;
+    padding: 0.3rem;
+}
+#options button{
+        padding: 0.5rem;
+        text-align: left;
+        font-size: .9rem;
+        font-weight: bolder;
+        background: white;
+        margin: .04rem
+}
+#options button:hover:not([disabled]){
+    color: white;
+    background: #000;
+}
+#options button:disabled{
+    cursor: no-drop;
+    font-weight: bolder;
+    color: rgb(9, 12, 12);
+}
+
+#next-btn, #play{
+    width: 20%;
+    padding: 0.5rem;
+    background: rgb(36, 143, 161);
+    font-weight: bold;
+    font-size: .9rem;
+    color: white;
+}
+
+
+@media(min-width: 900px){
+    .app{
+        width: 60%;
+    }
+    .sub-select button{
+        padding: 3rem;
+    }
+}
